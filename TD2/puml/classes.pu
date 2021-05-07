@@ -1,0 +1,41 @@
+@startuml
+abstract class BaseCrudStorage {
+ +create(key, value)
+ +read(key)
+ +updatekey, value)
+ +delete(key)
+ +keys()
+}
+
+abstract class BaseShardedCrudStorage {
+ #shard_crud_storage_cls
+ #shards
+ #nb_shards
+}
+
+class SimpleCrudStorage {
+ #content
+}
+
+
+class SimpleShardedCrudStorage {
+
+}
+
+BaseCrudStorage <|-- SimpleCrudStorage
+BaseCrudStorage <|-- BaseShardedCrudStorage
+BaseShardedCrudStorage <|--  SimpleShardedCrudStorage
+SimpleCrudStorage --* SimpleShardedCrudStorage
+class ConsistentHashingCrudStorage {
+  #shard_hash(i)
+  #key_to_hash(key)
+  #key_shard_index(key)
+  +shards_load
+  +shards_hash
+  +shards_id
+  +add_shard()
+  +remove_shard()
+}
+
+SimpleShardedCrudStorage <|-- ConsistentHashingCrudStorage
+@enduml
